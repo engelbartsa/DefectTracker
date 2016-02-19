@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+
 //Libby Lundgren
 
 public class DefectInfo {
@@ -8,14 +10,26 @@ public class DefectInfo {
 	private String description;
 	private String priority;
 	private String status;
-	private String openDate;
+	private LocalDateTime openDate;
 	private String closeDate;
 	private String reporterID;
 	private String assigneeID;
 	private String comments;
 	
 	
-	public DefectInfo(String tempDefectID, String tempOpenDate, String tempCloseDate, String tempReporterID, String tempDefectSummary, String tempDetailDescription, String tempAssignee, String tempStatus, String tempPriority, String tempComments){
+	public DefectInfo(LocalDateTime tempOpenDate, String tempCloseDate, String tempReporterID, String tempDefectSummary, String tempDetailDescription, String tempAssignee, String tempStatus, String tempPriority, String tempComments){
+		openDate = tempOpenDate;
+		closeDate = tempCloseDate;
+		reporterID = tempReporterID;
+		summary = tempDefectSummary;
+		description = tempDetailDescription;
+		priority = tempPriority;
+		status = tempStatus;
+		assigneeID = tempAssignee;
+		comments = tempComments;
+	}
+	
+	public DefectInfo(String tempDefectID, LocalDateTime tempOpenDate, String tempCloseDate, String tempReporterID, String tempDefectSummary, String tempDetailDescription, String tempAssignee, String tempStatus, String tempPriority, String tempComments){
 		defectID = tempDefectID;
 		openDate = tempOpenDate;
 		closeDate = tempCloseDate;
@@ -92,11 +106,11 @@ public class DefectInfo {
 		this.assigneeID = assigneeID;
 	}
 
-	public String getOpenDate() {
+	public LocalDateTime getOpenDate() {
 		return openDate;
 	}
 
-	public void setOpenDate(String openDate) {
+	public void setOpenDate(LocalDateTime openDate) {
 		this.openDate = openDate;
 	}
 

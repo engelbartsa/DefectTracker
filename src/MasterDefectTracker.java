@@ -9,7 +9,8 @@ public class MasterDefectTracker {
 	public static void main(String[] args) {
 
 		JFrame master = new JFrame();
-		JPanel mainPanel = new Login();
+		//JPanel mainPanel = new Login();
+		JPanel mainPanel = new MainPanel();
 		master.add(mainPanel);
 
 		master.setTitle("Login to Defect Tracker System");

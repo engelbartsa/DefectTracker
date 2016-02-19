@@ -152,7 +152,7 @@ public class ListUsersDAO {
 	public void makeConnection() {
 		String url = "jdbc:mysql://localhost:3306/defect_tracking";
 		String user = "root";
-		String password = "disney99";
+		String password = "Riggles0)";
 
 		try {
 

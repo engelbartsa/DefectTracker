@@ -117,8 +117,8 @@ public class ListDefectsDAO {
 		makeConnection();
 
 		try {
-			String q = "insert into defect (defect_id, open_date, close_date, reporter_id, defect_summary, detail_description, assignee, status, priority, comments) values " 
-					+ " ('" + i.getDefectID() + "', '" + i.getOpenDate() + "', '" + i.getCloseDate() + "', '" + i.getReporterID() + "', '"
+			String q = "insert into defect (open_date, close_date, reporter_id, defect_summary, detail_description, assignee, status, priority, comments) values " 
+					+ " ('" + i.getOpenDate() + "', '" + i.getCloseDate() + "', '" + i.getReporterID() + "', '"
 					+ i.getSummary() + "', '" + i.getDescription() + "', '" + i.getAssigneeID() + "', '" + i.getStatus() + "', '" 
 					+ i.getPriority() + "', '" + i.getComments() + "');";
 

@@ -76,10 +76,11 @@ public class SortDefects extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			String d = defectId.getSelectedItem().toString();
+			//LL commented out to get Back button to work from Sort window.
+			/*String d = defectId.getSelectedItem().toString();
 			defectList.setText(defectTrackerDAO.getCurrentListFromDefect(d));
 			System.out.println("noted change");
-			
+			*/
 			
 			if(e.getSource() == back){
 				removeAll();

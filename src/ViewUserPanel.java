@@ -26,8 +26,7 @@ public class ViewUserPanel extends JPanel{
 	JScrollPane scroll = new JScrollPane(list);
 	JButton back = new JButton("Back");
 	JButton delete = new JButton("Delete User");
-	//JButton add = new JButton("Add User");
-	//JButton update = new JButton("Update User");
+	JButton update = new JButton("Update User");
 	
 	public ViewUserPanel(){
 		title.setFont(new Font("Serif", Font.PLAIN, 16));
@@ -44,14 +43,12 @@ public class ViewUserPanel extends JPanel{
 		ButtonListener l = new ButtonListener();
 		back.addActionListener(l);
 		delete.addActionListener(l);
-		//add.addActionListener(l);
-		//update.addActionListener(l);
+		update.addActionListener(l);
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(back);
 		buttonPanel.add(delete);
-		//buttonPanel.add(add);
-		//buttonPanel.add(update);
+		buttonPanel.add(update);
 		
 		add(buttonPanel, BorderLayout.SOUTH);
 	}

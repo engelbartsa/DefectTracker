@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -23,16 +24,24 @@ public class AddDefect extends JPanel {
 	
 	String[] statuses = {"Open", "In Progress", "Closed"};
 	String[] priorities = {"Low", "Medium", "High"};
+	
 	JLabel title = new JLabel("Enter the defect information here: ");
 	JLabel summaryLabel = new JLabel("Defect Summary: ");
-	JTextField summary = new JTextField(100);
+	JTextField summary = new JTextField(10);
 	JLabel descriptionLabel = new JLabel("Enter a description here: ");
-	JTextField description = new JTextField(100);
+	JTextField description = new JTextField(10);
+	JLabel priorityLabel = new JLabel("Priority: ");
 	JComboBox priority = new JComboBox(priorities);
+	JLabel statusLabel = new JLabel("Status: ");
 	JComboBox status = new JComboBox(statuses);
-	JComboBox assigneeID = new JComboBox();
+	JLabel assigneeIDLabel = new JLabel("Assignee ID: ");
+	ListUsersDAO userTracker = new ListUsersDAO();
+	ArrayList<UserInfo> assigneeList = new ArrayList<UserInfo>(userTracker.arrayList);
+	JComboBox assigneeID = new JComboBox(assigneeList.toArray());
+	JLabel reporterIDLabel = new JLabel("Reporter ID: ");
+	JComboBox reporterID = new JComboBox(assigneeList.toArray());
 	JLabel commentsLabel = new JLabel("Comments: ");
-	JTextField comments = new JTextField(5000);
+	JTextField comments = new JTextField(10);
 	
 	JButton submit = new JButton("Submit");
 	JButton back = new JButton("Back to Main");
@@ -48,36 +57,36 @@ public class AddDefect extends JPanel {
 		
 		setLayout(new BorderLayout());
 		
-		
 		title.setFont(new Font("Serif", Font.PLAIN, 16));
 		add(title, BorderLayout.NORTH);
 		
-		JPanel buttonLabels = new JPanel(new GridLayout(2,0));
-		JPanel textBoxes = new JPanel(new GridLayout(2,0));
+		JPanel buttonLabels = new JPanel(new GridLayout(4,0));
+		JPanel textBoxes = new JPanel(new GridLayout(6,0));
 		
 		buttonLabels.add(summaryLabel);
 		textBoxes.add(summary);
 		buttonLabels.add(descriptionLabel);
-		buttonLabels.add(commentsLabel);
 		textBoxes.add(description);
+		buttonLabels.add(statusLabel);
 		textBoxes.add(status);
+		buttonLabels.add(priorityLabel);
 		textBoxes.add(priority);
+		buttonLabels.add(assigneeIDLabel);
 		textBoxes.add(assigneeID);
+		buttonLabels.add(commentsLabel);
 		textBoxes.add(comments);
 		
 		add(buttonLabels, BorderLayout.WEST);
 		add(textBoxes, BorderLayout.CENTER);
 		
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 		
 		buttonPanel.add(submit);
 		buttonPanel.add(viewDefects);
 		buttonPanel.add(back);
 		
 		add(buttonPanel, BorderLayout.SOUTH);
-		
-		
 	}
 	
 	class ButtonListener implements ActionListener {
@@ -86,18 +95,20 @@ public class AddDefect extends JPanel {
 
 			if (e.getSource() == submit) {
 
-				 String tempSummary = summary.getText();
-				 String tempDescription = description.getText();
-				 String tempPriority = priority.getSelectedItem().toString();
-				 String tempStatus = status.getSelectedItem().toString();
-				 String tempAssigneeID = assigneeID.getSelectedItem().toString();
-				 String tempComments = comments.getText();
+				LocalDateTime tempOpenDate = LocalDateTime.now();
+				String tempCloseDate = null;
+				String tempReporterID = assigneeID.getSelectedItem().toString();
+				String tempSummary = summary.getText();
+				String tempDescription = description.getText();
+				String tempAssigneeID = assigneeID.getSelectedItem().toString();
+				String tempStatus = status.getSelectedItem().toString();
+				String tempPriority = priority.getSelectedItem().toString();
+				String tempComments = comments.getText();
 
 				 //need to add some type of error handling if options are empty
 				 
-				DefectInfo d = new DefectInfo(tempSummary, tempDescription, tempPriority, tempStatus, tempAssigneeID, tempComments);
-				//I think this is messed up because i'm not passing the same number as in the constructor? 
-				ListDefectsDAO.insertNewDefect(d);
+				DefectInfo d = new DefectInfo(tempOpenDate, tempCloseDate, tempReporterID, tempSummary, tempDescription, tempAssigneeID, tempStatus, tempPriority, tempComments);
+   				ListDefectsDAO.insertNewDefect(d);
 					
 				summary.setText("");
 				description.setText("");

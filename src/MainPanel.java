@@ -48,23 +48,22 @@ public class MainPanel extends JPanel{
                     JPanel newPanel=new ViewDefectsPanel();
                     add(newPanel);
                     revalidate();
-                
+                    newPanel.repaint();
                 } 
                 if (e.getSource() == add) {
                 	removeAll();
                     JPanel newPanel=new AddDefect();
                     add(newPanel);
                     revalidate();
-                    
+                    newPanel.repaint();
                 }
                 if (e.getSource() == sort) {
                     removeAll();
                     JPanel newPanel=new SortDefects();
                     add(newPanel);
                     revalidate();
-                  
-            }
-                
+                    newPanel.repaint();
+            }    
         }
 	}
 }

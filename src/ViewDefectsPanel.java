@@ -26,7 +26,6 @@ public class ViewDefectsPanel extends JPanel {
 	JScrollPane scroll = new JScrollPane(list);
 	JButton back = new JButton("Back");
 	JButton delete = new JButton("Delete defect");
-	//JButton add = new JButton("Add defect");
 	//JButton update = new JButton("Update defect");
 	
 	public ViewDefectsPanel(){
@@ -44,13 +43,11 @@ public class ViewDefectsPanel extends JPanel {
 		ButtonListener l = new ButtonListener();
 		back.addActionListener(l);
 		delete.addActionListener(l);
-		//add.addActionListener(l);
 		//update.addActionListener(l);
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(back);
 		buttonPanel.add(delete);
-		//buttonPanel.add(add);
 		//buttonPanel.add(update);
 		
 		add(buttonPanel, BorderLayout.SOUTH);
