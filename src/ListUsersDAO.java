@@ -34,7 +34,7 @@ public class ListUsersDAO {
 					
 					//LL changed ListUsers to UserInfo 
 					UserInfo e = new UserInfo(tempUserId, tempFirstName, tempLastName, tempRole, tempEmail);
-					arrayList.add(e);
+					arrayList.add(e);			
 				}
 				if (rs!= null) {
 					rs.close();
@@ -52,7 +52,6 @@ public class ListUsersDAO {
 
 		}
 
-	
 	public String getCurrentList() {
 
 		String str = "";
@@ -152,7 +151,7 @@ public class ListUsersDAO {
 	public void makeConnection() {
 		String url = "jdbc:mysql://localhost:3306/defect_tracking";
 		String user = "root";
-		String password = "Riggles0)";
+		String password = "disney99";
 
 		try {
 

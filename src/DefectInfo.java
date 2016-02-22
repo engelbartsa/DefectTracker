@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class DefectInfo {
 	
-	private String defectID;
+	private int defectID;
 	private String userID;
 	private String summary;
 	private String description;
@@ -15,10 +15,27 @@ public class DefectInfo {
 	private String reporterID;
 	private String assigneeID;
 	private String comments;
+	private String openDt;
+	private String changeLog;
 	
+//Heather changed this constructor so we are not passing defect_id, open_date, or close_date on an add defect.  The table handles those
+//fields so we don't need to pass them to the insert statement.
+	public DefectInfo(String tempReporterID, String tempDefectSummary, String tempDetailDescription, String tempAssignee, String tempStatus, String tempPriority, String tempComments){
+		reporterID = tempReporterID;
+		summary = tempDefectSummary;
+		description = tempDetailDescription;
+		priority = tempPriority;
+		status = tempStatus;
+		assigneeID = tempAssignee;
+		comments = tempComments;
+	}
 	
-	public DefectInfo(LocalDateTime tempOpenDate, String tempCloseDate, String tempReporterID, String tempDefectSummary, String tempDetailDescription, String tempAssignee, String tempStatus, String tempPriority, String tempComments){
-		openDate = tempOpenDate;
+// Heather added this constructor to use string for the tempOpenDate.  We need to play with that abit.  this will be needed on the view,
+// only I don't know if the veiw will need the dates as a string or datetime field like we have in the constructor below this one.  
+// As we are working through the view we will know this which one we will need.
+	public DefectInfo(int tempDefectID, String tempOpenDate, String tempCloseDate, String tempReporterID, String tempDefectSummary, String tempDetailDescription, String tempAssignee, String tempStatus, String tempPriority, String tempComments){
+		defectID = tempDefectID;
+		openDt = tempOpenDate;
 		closeDate = tempCloseDate;
 		reporterID = tempReporterID;
 		summary = tempDefectSummary;
@@ -29,7 +46,7 @@ public class DefectInfo {
 		comments = tempComments;
 	}
 	
-	public DefectInfo(String tempDefectID, LocalDateTime tempOpenDate, String tempCloseDate, String tempReporterID, String tempDefectSummary, String tempDetailDescription, String tempAssignee, String tempStatus, String tempPriority, String tempComments){
+	public DefectInfo(int tempDefectID, LocalDateTime tempOpenDate, String tempCloseDate, String tempReporterID, String tempDefectSummary, String tempDetailDescription, String tempAssignee, String tempStatus, String tempPriority, String tempComments){
 		defectID = tempDefectID;
 		openDate = tempOpenDate;
 		closeDate = tempCloseDate;
@@ -42,11 +59,11 @@ public class DefectInfo {
 		comments = tempComments;
 	}
 
-	public String getDefectID() {
+	public int getDefectID() {
 		return defectID;
 	}
 
-	public void setDefectID(String defectID) {
+	public void setDefectID(int defectID) {
 		this.defectID = defectID;
 	}
 	
@@ -129,6 +146,15 @@ public class DefectInfo {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
+	
+	public String getChangeLog() {
+		return changeLog;
+	}
+
+	public void setChangeLog(String changeLog) {
+		this.changeLog = changeLog;
+	}
+
 
 	@Override
 	public String toString() {

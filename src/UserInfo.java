@@ -9,12 +9,12 @@ public class UserInfo {
 	private String role;
 	
 	
-	public UserInfo(String uID, String fn, String ln, String e, String r){
+	public UserInfo(String uID, String fn, String ln, String r, String e){
 		userID = uID;
 		firstName = fn;
 		lastName = ln;
-		email = e;
 		role = r;
+		email = e;
 	}
 
 //Heather Added this.  Thought it was needed but may not be.
@@ -62,8 +62,13 @@ public class UserInfo {
 		this.role = role;
 	}
 
+	
+//Heather changed this toString as this is what displays on the assigneeId and reporterId drop downs, it wasn't easy to read so I changed
+//it up. 
 	public String toString() {
-		return "UserInfo [userID=" + userID + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", role=" + role + "]";
+//		return "UserInfo [userID=" + userID + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+//				+ ", role=" + role + "]";
+		return userID + "; " + firstName + " " + lastName + "; " + role + "; " + email;
 	}
+
 }
