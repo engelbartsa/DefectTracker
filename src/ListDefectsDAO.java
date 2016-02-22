@@ -22,13 +22,17 @@ public class ListDefectsDAO {
 				makeConnection();
 				
 				try {
+					String tempCloseDate = " ";
 					String q = "SELECT * FROM defect";
 					st = con.createStatement();
 					rs = st.executeQuery(q);			
 					while (rs.next()){
-						String tempDefectId = rs.getString(1);
-						String tempOpenDate = rs.getString(2);
-						String tempCloseDate = rs.getString(3);
+						int tempDefectId = rs.getInt(1);
+						String tempOpenDate = rs.getTimestamp(2).toString();
+						if (rs.getTimestamp(3) != null){
+							tempCloseDate = rs.getTimestamp(3).toString(); }
+						else{
+							tempCloseDate = " "; }
 						String tempReporterId = rs.getString(4);
 						String tempDefectSummary = rs.getString(5);
 						String tempDetailDescription = rs.getString(6);
@@ -66,11 +70,11 @@ public class ListDefectsDAO {
 		return str;
 	}
 
-	public String getCurrentListFromDefect(String s) {
+	public String getCurrentListFromDefect(int s) {
 		String str = "";
 
 		for (int i = 0; i < arrayList.size(); i++) {
-			if (arrayList.get(i).getDefectID().equals(s)) {
+			if (arrayList.get(i).getDefectID() == s) {
 				str += arrayList.get(i).getOpenDate();
 				str += arrayList.get(i).getCloseDate();
 				str += arrayList.get(i).getReporterID();
@@ -112,15 +116,73 @@ public class ListDefectsDAO {
 	 * }
 	 */
 	
-	//LL changed <DefectInfo> from <ListDefects>
+//LL changed <DefectInfo> from <ListDefects>
+//Heather changed the insertNewDefect to not pass the defect_id, open_date, or the close_date. This one is now working as it should.
 	public void insertNewDefect(DefectInfo i) {
 		makeConnection();
 
 		try {
-			String q = "insert into defect (open_date, close_date, reporter_id, defect_summary, detail_description, assignee, status, priority, comments) values " 
-					+ " ('" + i.getOpenDate() + "', '" + i.getCloseDate() + "', '" + i.getReporterID() + "', '"
-					+ i.getSummary() + "', '" + i.getDescription() + "', '" + i.getAssigneeID() + "', '" + i.getStatus() + "', '" 
-					+ i.getPriority() + "', '" + i.getComments() + "');";
+			String q = "insert into defect (reporter_id, defect_summary, detail_description, assignee, status, priority, comments) values " 
+					+ " ('" + i.getReporterID() + "', '" + i.getSummary() + "', '" + i.getDescription() + "', '" 
+					+ i.getAssigneeID() + "', '" + i.getStatus() + "', '" + i.getPriority() + "', '" + i.getComments() + "');";
+
+			st = con.createStatement();
+			st.executeUpdate(q);
+
+			if (st != null) {
+				st.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+
+		} catch (SQLException ex) {
+			System.out.println("Error with table or data");
+		}
+
+	}
+
+// Heather added this to add a row to the history table after we insert into the defect table but it's not working.  I sent an 
+// email to Kelli with the code snippet but i'm also going to take my laptop to work tomorrow to see if I can get some help from someone 
+// at work.  See if they see anything.  If any of you take a look and can figure it out let me know.  Since we auto increment the defect_id
+// in the insertDefect we have to retrieve the defect_id since that is a foreign key to the history table.  I've tested the query in mysql
+// and it works but seems to fail here.  I'm fried so I'm going to look at it tomorrow night.  if it holds you up comment out the insertHistory
+// in addDefect. Sorry ladies was hoping to make this work so I could move on. 
+	public void insertHistory() {
+		makeConnection();
+
+		try {
+
+			String q1 = "SELECT MAX(DEFECT_ID) FROM defect";
+			st = con.createStatement();
+			rs = st.executeQuery(q1);
+			int tempDefectId = rs.getInt(1);
+			
+			String closeDate = " ";
+			String q2 = "SELECT * FROM defect where defect_id = tempDefectId";
+			st = con.createStatement();
+			rs = st.executeQuery(q2);
+			int defectId = rs.getInt(1);
+			String openDate = rs.getTimestamp(2).toString();
+			
+			if (rs.getTimestamp(3) != null){
+				closeDate = rs.getTimestamp(3).toString(); }
+			else{
+				closeDate = " "; }
+			
+			String reporterId = rs.getString(4);
+			String defectSummary = rs.getString(5);
+			String detailDescription = rs.getString(6);
+			String assignee = rs.getString(7);
+			String status = rs.getString(8);
+			String priority = rs.getString(9);
+			String comments = rs.getString(10);
+			
+			DefectInfo e = new DefectInfo(defectId, openDate, closeDate, reporterId, defectSummary, detailDescription, assignee, status, priority, comments);
+			String changeLog = e.toString();
+			
+			String q = "insert into history (defect_id, user_id, change_log) values " 
+					+ " ('" + tempDefectId + "', '" + reporterId + "', '" + changeLog + "');";
 
 			st = con.createStatement();
 			st.executeUpdate(q);
