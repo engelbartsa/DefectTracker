@@ -58,6 +58,12 @@ public class DefectInfo {
 		assigneeID = tempAssignee;
 		comments = tempComments;
 	}
+	
+	public DefectInfo(int tempDefectID, String tempReporterID, String tempChangeLog){
+		defectID = tempDefectID;
+		reporterID = tempReporterID;
+		changeLog = tempChangeLog;
+	}
 
 	public int getDefectID() {
 		return defectID;

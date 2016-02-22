@@ -134,10 +134,17 @@ public class AddDefect extends JPanel {
 				
 				
 				DefectInfo d = new DefectInfo(tempReporterID, tempSummary, tempDescription, tempAssigneeID, tempStatus, tempPriority, tempComments);
-   				defectTracker.insertNewDefect(d);
+ 				defectTracker.insertNewDefect(d);
    				
-   				System.out.println("after insert of defect");
-   				defectTracker.insertHistory();
+   				int defect_id = defectTracker.getDefectId();
+   				System.out.println("after defect_id select");
+   				
+// Heather - this one keeps failing on the rs = statement in the DAO.  Still working on that but I think I'm close.
+   				System.out.println("defect_id: " + defect_id);
+   				String chgLog = defectTracker.selectDefectbyID(defect_id);
+   				
+   				DefectInfo h = new DefectInfo(defect_id, tempReporterID, chgLog);
+   				defectTracker.insertHistory(h);
 					
 				summary.setText("");
 				description.setText("");

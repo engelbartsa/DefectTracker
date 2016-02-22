@@ -137,7 +137,7 @@ public class ListDefectsDAO {
 			}
 
 		} catch (SQLException ex) {
-			System.out.println("Error with table or data");
+			System.out.println("Error with table or data; inserting into defect table");
 		}
 
 	}
@@ -148,28 +148,53 @@ public class ListDefectsDAO {
 // in the insertDefect we have to retrieve the defect_id since that is a foreign key to the history table.  I've tested the query in mysql
 // and it works but seems to fail here.  I'm fried so I'm going to look at it tomorrow night.  if it holds you up comment out the insertHistory
 // in addDefect. Sorry ladies was hoping to make this work so I could move on. 
-	public void insertHistory() {
+	public int getDefectId() {
+		
 		makeConnection();
+		int tempDefectId = 0;
 
 		try {
 
 			String q1 = "SELECT MAX(DEFECT_ID) FROM defect";
 			st = con.createStatement();
 			rs = st.executeQuery(q1);
-			int tempDefectId = rs.getInt(1);
+			rs.next();
+			tempDefectId = rs.getInt(1);
+			System.out.println("tempDefectId: " + tempDefectId);
 			
-			String closeDate = " ";
-			String q2 = "SELECT * FROM defect where defect_id = tempDefectId";
+			if (rs!= null) {
+				rs.close();
+			}
+			if (st!= null) {
+				st.close();
+			}
+			if (con!= null) {
+				con.close();
+			}
+			
+		} catch (SQLException ex) {
+			System.out.println("Error with table or data; error selecting defect_id");
+		}
+		
+		return tempDefectId;
+
+	}
+
+	public String selectDefectbyID(int id) {
+				
+		makeConnection();
+		String chgLog = " ";
+
+		try {
+			String q2 = "SELECT * FROM defect where defect_id = id";
 			st = con.createStatement();
 			rs = st.executeQuery(q2);
-			int defectId = rs.getInt(1);
+			rs.next();
+			
+			System.out.println("before the resultset move statements");
+			int defectId = rs.getInt(1); 
 			String openDate = rs.getTimestamp(2).toString();
-			
-			if (rs.getTimestamp(3) != null){
-				closeDate = rs.getTimestamp(3).toString(); }
-			else{
-				closeDate = " "; }
-			
+			String closeDate = rs.getDate(3).toString();
 			String reporterId = rs.getString(4);
 			String defectSummary = rs.getString(5);
 			String detailDescription = rs.getString(6);
@@ -179,10 +204,34 @@ public class ListDefectsDAO {
 			String comments = rs.getString(10);
 			
 			DefectInfo e = new DefectInfo(defectId, openDate, closeDate, reporterId, defectSummary, detailDescription, assignee, status, priority, comments);
-			String changeLog = e.toString();
+			chgLog = e.toString();
+			
+			if (rs!= null) {
+				rs.close();
+			}
+			if (st!= null) {
+				st.close();
+			}
+			if (con!= null) {
+				con.close();
+			}
+			
+		} catch (SQLException ex) {
+			System.out.println("Error with table or data; error selecting defect using defect_id");
+		}
+		
+		return chgLog;
+
+	}
+
+	public void insertHistory(DefectInfo h) {
+		
+		makeConnection();
+
+		try {
 			
 			String q = "insert into history (defect_id, user_id, change_log) values " 
-					+ " ('" + tempDefectId + "', '" + reporterId + "', '" + changeLog + "');";
+					+ " ('" + h.getDefectID() + "', '" + h.getReporterID() + "', '" + h.getChangeLog() + "');";
 
 			st = con.createStatement();
 			st.executeUpdate(q);
@@ -195,7 +244,7 @@ public class ListDefectsDAO {
 			}
 
 		} catch (SQLException ex) {
-			System.out.println("Error with table or data");
+			System.out.println("Error with table or data; inserting into history table");
 		}
 
 	}
