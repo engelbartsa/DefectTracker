@@ -22,7 +22,7 @@ public class MainPanel extends JPanel{
 		
 		removeAll();
 		JPanel mainMenu = new JPanel();
-	    
+		
 		mainMenu.add(view);
 		mainMenu.add(add);
 		mainMenu.add(sort);

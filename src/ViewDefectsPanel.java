@@ -13,8 +13,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-//import ViewDefectsPanel.ButtonListener; - Do I need this line? LL
-
 public class ViewDefectsPanel extends JPanel {
 	Container c = getRootPane();
 	ListDefectsDAO dtDAO = new ListDefectsDAO();
@@ -35,7 +33,7 @@ public class ViewDefectsPanel extends JPanel {
 		
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scroll.setPreferredSize(new Dimension(350, 100));
+        scroll.setPreferredSize(new Dimension(650, 300));
 		
 		add(title, BorderLayout.NORTH);
 		add(scroll, BorderLayout.CENTER);
@@ -70,6 +68,7 @@ public class ViewDefectsPanel extends JPanel {
 			if(defect != -1){
 				//LL changed ListItem to DefectInfo / and deleteItem to deleteDefect
 				DefectInfo tempDefect = listDefect.get(defect);
+				dtDAO.deleteHistory(tempDefect);
 				dtDAO.deleteDefect(tempDefect);
 				
 				//LL changed listModel to listDefect
