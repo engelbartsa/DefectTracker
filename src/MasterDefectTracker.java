@@ -16,7 +16,6 @@ public class MasterDefectTracker {
 		master.setTitle("Login to Defect Tracker System");
 		master.setVisible(true);
 		master.setSize(800, 800);
-//		master.setLayout(null);
 		master.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }

@@ -61,6 +61,7 @@ public class DefectInfo {
 		comments = tempComments;
 	}*/
 	
+	
 	public DefectInfo(int tempDefectID, String tempReporterID, String tempChangeLog){
 		defectID = tempDefectID;
 		reporterID = tempReporterID;
@@ -84,6 +85,7 @@ public class DefectInfo {
 		this.userID = userID;
 	}*/
 
+	
 	public String getSummary() {
 		return summary;
 	}

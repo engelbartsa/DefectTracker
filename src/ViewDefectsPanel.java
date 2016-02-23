@@ -50,6 +50,7 @@ public class ViewDefectsPanel extends JPanel {
 		
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
+	
 	class ButtonListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {

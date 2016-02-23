@@ -291,6 +291,7 @@ public class ListDefectsDAO {
 
 	}
 
+	
 	public void makeConnection() {
 			String url = "jdbc:mysql://localhost:3306/defect_tracking";
 			String user = "root";

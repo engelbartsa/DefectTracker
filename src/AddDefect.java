@@ -57,7 +57,6 @@ public class AddDefect extends JPanel {
 	JButton back = new JButton("Back to Main");
 	JButton viewDefects = new JButton("View Defects");
 
-	
 	public AddDefect() {
 		
 		ButtonListener b = new ButtonListener();
