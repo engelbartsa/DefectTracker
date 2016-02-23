@@ -57,7 +57,6 @@ public class AddDefect extends JPanel {
 	JButton back = new JButton("Back to Main");
 	JButton viewDefects = new JButton("View Defects");
 
-	
 	public AddDefect() {
 		
 		ButtonListener b = new ButtonListener();
@@ -130,14 +129,16 @@ public class AddDefect extends JPanel {
 				System.out.println("tempReporterID: " + tempReporterID); 
 				System.out.println("tempStatus: " + tempStatus); 
 				System.out.println("tempPriority: " + tempPriority); 
-				System.out.println("tempComments: " + tempComments); */
-				
+				System.out.println("tempComments: " + tempComments); */		
 				
 				DefectInfo d = new DefectInfo(tempReporterID, tempSummary, tempDescription, tempAssigneeID, tempStatus, tempPriority, tempComments);
-   				defectTracker.insertNewDefect(d);
+ 				defectTracker.insertNewDefect(d);
    				
-   				System.out.println("after insert of defect");
-   				defectTracker.insertHistory();
+   				int defect_id = defectTracker.getDefectId();
+   				String chgLog = defectTracker.selectDefectbyID(defect_id);
+   				
+   				DefectInfo h = new DefectInfo(defect_id, tempReporterID, chgLog);
+   				defectTracker.insertHistory(h);
 					
 				summary.setText("");
 				description.setText("");

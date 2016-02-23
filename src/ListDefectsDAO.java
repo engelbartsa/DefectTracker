@@ -2,16 +2,17 @@
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ListDefectsDAO {
 
-	//LL changed <DefectInfo> from <ListDefects>
 	ArrayList<DefectInfo> arrayList = new ArrayList<DefectInfo>();
 	Connection con = null;
 	Statement st = null;
@@ -29,9 +30,9 @@ public class ListDefectsDAO {
 					while (rs.next()){
 						int tempDefectId = rs.getInt(1);
 						String tempOpenDate = rs.getTimestamp(2).toString();
-						if (rs.getTimestamp(3) != null){
-							tempCloseDate = rs.getTimestamp(3).toString(); }
-						else{
+						if (rs.getDate(3) != null) {
+						 	tempCloseDate = rs.getDate(3).toString(); }
+						else {
 							tempCloseDate = " "; }
 						String tempReporterId = rs.getString(4);
 						String tempDefectSummary = rs.getString(5);
@@ -42,7 +43,6 @@ public class ListDefectsDAO {
 						String tempComments = rs.getString(10);
 //need to add comments from history table.  Connect by defect_id				
 						
-						//LL changed <DefectInfo> from <ListDefects>
 						DefectInfo e = new DefectInfo(tempDefectId, tempOpenDate, tempCloseDate, tempReporterId, tempDefectSummary
 								        , tempDetailDescription, tempAssignee, tempStatus, tempPriority, tempComments);
 						arrayList.add(e);
@@ -116,8 +116,6 @@ public class ListDefectsDAO {
 	 * }
 	 */
 	
-//LL changed <DefectInfo> from <ListDefects>
-//Heather changed the insertNewDefect to not pass the defect_id, open_date, or the close_date. This one is now working as it should.
 	public void insertNewDefect(DefectInfo i) {
 		makeConnection();
 
@@ -137,39 +135,60 @@ public class ListDefectsDAO {
 			}
 
 		} catch (SQLException ex) {
-			System.out.println("Error with table or data");
+			System.out.println("Error with table or data; inserting into defect table");
 		}
 
 	}
 
-// Heather added this to add a row to the history table after we insert into the defect table but it's not working.  I sent an 
-// email to Kelli with the code snippet but i'm also going to take my laptop to work tomorrow to see if I can get some help from someone 
-// at work.  See if they see anything.  If any of you take a look and can figure it out let me know.  Since we auto increment the defect_id
-// in the insertDefect we have to retrieve the defect_id since that is a foreign key to the history table.  I've tested the query in mysql
-// and it works but seems to fail here.  I'm fried so I'm going to look at it tomorrow night.  if it holds you up comment out the insertHistory
-// in addDefect. Sorry ladies was hoping to make this work so I could move on. 
-	public void insertHistory() {
+	public int getDefectId() {
+		
 		makeConnection();
+		int tempDefectId = 0;
 
 		try {
 
 			String q1 = "SELECT MAX(DEFECT_ID) FROM defect";
 			st = con.createStatement();
 			rs = st.executeQuery(q1);
-			int tempDefectId = rs.getInt(1);
+			rs.next();
+			tempDefectId = rs.getInt(1);
 			
+			if (rs!= null) {
+				rs.close();
+			}
+			if (st!= null) {
+				st.close();
+			}
+			if (con!= null) {
+				con.close();
+			}
+			
+		} catch (SQLException ex) {
+			System.out.println("Error with table or data; error selecting defect_id");
+		}
+		
+		return tempDefectId;
+
+	}
+
+	public String selectDefectbyID(int id) {
+				
+		makeConnection();
+		String chgLog = " ";
+
+		try {
 			String closeDate = " ";
-			String q2 = "SELECT * FROM defect where defect_id = tempDefectId";
+			String q2 = "SELECT * FROM defect where defect_id ='"+id+"'";
 			st = con.createStatement();
 			rs = st.executeQuery(q2);
-			int defectId = rs.getInt(1);
+			rs.next();
+			
+			int defectId = rs.getInt(1); 
 			String openDate = rs.getTimestamp(2).toString();
-			
-			if (rs.getTimestamp(3) != null){
-				closeDate = rs.getTimestamp(3).toString(); }
-			else{
+			if (rs.getDate(3) != null) {
+			    closeDate = rs.getDate(3).toString(); }
+			else {
 				closeDate = " "; }
-			
 			String reporterId = rs.getString(4);
 			String defectSummary = rs.getString(5);
 			String detailDescription = rs.getString(6);
@@ -178,11 +197,37 @@ public class ListDefectsDAO {
 			String priority = rs.getString(9);
 			String comments = rs.getString(10);
 			
+			System.out.println("openDate: " + openDate);
+			System.out.println("closeDate: " + closeDate);
 			DefectInfo e = new DefectInfo(defectId, openDate, closeDate, reporterId, defectSummary, detailDescription, assignee, status, priority, comments);
-			String changeLog = e.toString();
+			chgLog = e.toString();
+			
+			if (rs!= null) {
+				rs.close();
+			}
+			if (st!= null) {
+				st.close();
+			}
+			if (con!= null) {
+				con.close();
+			}
+			
+		} catch (SQLException ex) {
+			System.out.println("Error with table or data; error selecting defect using defect_id");
+		}
+		
+		return chgLog;
+
+	}
+
+	public void insertHistory(DefectInfo h) {
+		
+		makeConnection();
+
+		try {
 			
 			String q = "insert into history (defect_id, user_id, change_log) values " 
-					+ " ('" + tempDefectId + "', '" + reporterId + "', '" + changeLog + "');";
+					+ " ('" + h.getDefectID() + "', '" + h.getReporterID() + "', '" + h.getChangeLog() + "');";
 
 			st = con.createStatement();
 			st.executeUpdate(q);
@@ -195,21 +240,40 @@ public class ListDefectsDAO {
 			}
 
 		} catch (SQLException ex) {
-			System.out.println("Error with table or data");
+			System.out.println("Error with table or data; inserting into history table");
 		}
 
 	}
 
 	//LL changed ListDefects to DefectInfo 
+	
+	public void deleteHistory(DefectInfo i) {
+		makeConnection();
+
+		try {
+			String q = "delete from history where defect_id = '" + i.getDefectID() +"'";
+			st = con.createStatement();
+			st.executeUpdate(q);
+
+			if (st != null) {
+				st.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+
+		} catch (SQLException ex) {
+			System.out.println("Error with table or data; delete from history by defect_id");
+		}
+
+	}
+
+	
 	public void deleteDefect(DefectInfo i) {
 		makeConnection();
 
 		try {
-			String q = "delete from defect where defect_id = '" + i.getDefectID() + "' and open_date = '" + i.getOpenDate()
-					+ "' and close_date = '" + i.getCloseDate() + "' and reporter_id = '" + i.getReporterID() + "' and defect_summary = '"
-					+ i.getSummary() + "' and detail_description = '" + i.getDescription() + "' and assignee = '" + i.getAssigneeID()
-					+ "' and status = '" + i.getStatus() + "' and priority = '" + i.getPriority() + "' and comments = '" + i.getComments()
-					+ "' limit 1";
+			String q = "delete from defect where defect_id = '" + i.getDefectID() + "' limit 1";
 
 			st = con.createStatement();
 			st.executeUpdate(q);
@@ -222,11 +286,12 @@ public class ListDefectsDAO {
 			}
 
 		} catch (SQLException ex) {
-			System.out.println("Error with table or data");
+			System.out.println("Error with table or data; delete from defect by defect_id");
 		}
 
 	}
 
+	
 	public void makeConnection() {
 			String url = "jdbc:mysql://localhost:3306/defect_tracking";
 			String user = "root";

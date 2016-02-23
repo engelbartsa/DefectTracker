@@ -10,7 +10,8 @@ public class DefectInfo {
 	private String description;
 	private String priority;
 	private String status;
-	private LocalDateTime openDate;
+//	private LocalDateTime openDate;
+	private String openDate;
 	private String closeDate;
 	private String reporterID;
 	private String assigneeID;
@@ -35,19 +36,6 @@ public class DefectInfo {
 // As we are working through the view we will know this which one we will need.
 	public DefectInfo(int tempDefectID, String tempOpenDate, String tempCloseDate, String tempReporterID, String tempDefectSummary, String tempDetailDescription, String tempAssignee, String tempStatus, String tempPriority, String tempComments){
 		defectID = tempDefectID;
-		openDt = tempOpenDate;
-		closeDate = tempCloseDate;
-		reporterID = tempReporterID;
-		summary = tempDefectSummary;
-		description = tempDetailDescription;
-		priority = tempPriority;
-		status = tempStatus;
-		assigneeID = tempAssignee;
-		comments = tempComments;
-	}
-	
-	public DefectInfo(int tempDefectID, LocalDateTime tempOpenDate, String tempCloseDate, String tempReporterID, String tempDefectSummary, String tempDetailDescription, String tempAssignee, String tempStatus, String tempPriority, String tempComments){
-		defectID = tempDefectID;
 		openDate = tempOpenDate;
 		closeDate = tempCloseDate;
 		reporterID = tempReporterID;
@@ -58,6 +46,27 @@ public class DefectInfo {
 		assigneeID = tempAssignee;
 		comments = tempComments;
 	}
+	
+//Heather commented this out.
+/*	public DefectInfo(int tempDefectID, LocalDateTime tempOpenDate, String tempCloseDate, String tempReporterID, String tempDefectSummary, String tempDetailDescription, String tempAssignee, String tempStatus, String tempPriority, String tempComments){
+		defectID = tempDefectID;
+		openDate = tempOpenDate;
+		closeDate = tempCloseDate;
+		reporterID = tempReporterID;
+		summary = tempDefectSummary;
+		description = tempDetailDescription;
+		priority = tempPriority;
+		status = tempStatus;
+		assigneeID = tempAssignee;
+		comments = tempComments;
+	}*/
+	
+	
+	public DefectInfo(int tempDefectID, String tempReporterID, String tempChangeLog){
+		defectID = tempDefectID;
+		reporterID = tempReporterID;
+		changeLog = tempChangeLog;
+	}
 
 	public int getDefectID() {
 		return defectID;
@@ -67,14 +76,16 @@ public class DefectInfo {
 		this.defectID = defectID;
 	}
 	
-	public String getUserID() {
+// Heather don't think we need these, we called the id assignee id and reporter id.
+/*	public String getUserID() {
 		return userID;
 	}
 
 	public void setUserID(String userID) {
 		this.userID = userID;
-	}
+	}*/
 
+	
 	public String getSummary() {
 		return summary;
 	}
@@ -123,11 +134,11 @@ public class DefectInfo {
 		this.assigneeID = assigneeID;
 	}
 
-	public LocalDateTime getOpenDate() {
+	public String getOpenDate() {
 		return openDate;
 	}
 
-	public void setOpenDate(LocalDateTime openDate) {
+	public void setOpenDate(String openDate) {
 		this.openDate = openDate;
 	}
 
@@ -158,9 +169,8 @@ public class DefectInfo {
 
 	@Override
 	public String toString() {
-		return "DefectInfo [defectID=" + defectID + ", userID=" + userID + ", summary=" + summary + ", description="
-				+ description + ", priority=" + priority + ", status=" + status + ", openDate=" + openDate
-				+ ", closeDate=" + closeDate + ", creatorID=" + reporterID + ", assigneeID=" + assigneeID + ", comments="
-				+ comments + "]";
+		return "Defect ID = " + defectID + "; Open Date = " + openDate + "; Close Date = " + closeDate + "; Reporter ID = " + reporterID 
+				+"; Summary = " + summary + ", Description = " + description + ", Priority = " + priority + ", Status = " + status 
+				+", Assignee ID=" + assigneeID + ", Comments=" + comments;
 	}
 }
