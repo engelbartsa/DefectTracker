@@ -21,6 +21,7 @@ public class AddUser extends JPanel {
 	JTextField firstName = new JTextField(30);
 	JLabel lastNameLabel = new JLabel("Last Name: ");
 	JTextField lastName = new JTextField(30);
+	JLabel roleLabel = new JLabel("Role: ");
 	JComboBox role = new JComboBox(roles);
 	JLabel userIdLabel = new JLabel("User Id: ");
 	JTextField userId = new JTextField(30);
@@ -28,6 +29,7 @@ public class AddUser extends JPanel {
 	JTextField email = new JTextField(30);
 	JButton back = new JButton("Back to Main");
 	JButton addUser = new JButton("Add User");
+	JLabel error = new JLabel();
 
 	ListUsersDAO defectTracker = new ListUsersDAO();
 
@@ -40,27 +42,30 @@ public class AddUser extends JPanel {
 
 		setLayout(new BorderLayout());
 
-		title.setFont(new Font("Serif", Font.PLAIN, 16));
+		title.setFont(new Font("Serif", Font.BOLD, 20));
+		error.setFont(new Font("Serif", Font.BOLD, 20));
 		add(title, BorderLayout.NORTH);
 
-		JPanel buttonLabels = new JPanel(new GridLayout(4, 0));
-		JPanel textBoxes = new JPanel(new GridLayout(5, 0));
+		JPanel buttonLabels = new JPanel(new GridLayout(6, 0));
+		JPanel textBoxes = new JPanel(new GridLayout(6, 0));
 
 		buttonLabels.add(firstNameLabel);
 		textBoxes.add(firstName);
 		buttonLabels.add(lastNameLabel);
 		textBoxes.add(lastName);
+		buttonLabels.add(roleLabel);
 		textBoxes.add(role);
 		buttonLabels.add(userIdLabel);
 		textBoxes.add(userId);
 		buttonLabels.add(emailLabel);
 		textBoxes.add(email);
+		buttonLabels.add(error);
 
 		add(buttonLabels, BorderLayout.WEST);
 		add(textBoxes, BorderLayout.CENTER);
 
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 
 		buttonPanel.add(addUser);
 		buttonPanel.add(back);
@@ -76,13 +81,23 @@ public class AddUser extends JPanel {
 			if (e.getSource() == addUser) {
 				
 				String tempUserId = userId.getText();
-
 				String tempFirstName = firstName.getText();
 				String tempLastName = lastName.getText();
 				String tempEmail = email.getText();
 				String tempRole = role.getSelectedItem().toString(); 
-
-				 //need to add some type of error handling if options are empty
+			 
+				if (tempUserId.equals("")){
+					error.setText("Enter a user id.");
+					
+				} else if (tempFirstName.equals("")){
+					error.setText("Enter the first name.");
+				} else if (tempLastName.equals("")){
+					error.setText("Enter the last name.");
+				} else if (tempEmail.equals("")) {
+					error.setText("Enter an email address");
+				} else if (tempRole.equals("")){
+					error.setText("Enter the role.");
+				} else {
 				
 				UserInfo u = new UserInfo(tempUserId, tempFirstName, tempLastName, tempEmail, tempRole );
 				ListUsersDAO.insertNewUser(u);
@@ -93,6 +108,7 @@ public class AddUser extends JPanel {
 				email.setText("");
 				
 				System.out.println("Add new user to database");
+			}
 			}
 
 			if (e.getSource() == back) {

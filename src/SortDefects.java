@@ -40,7 +40,7 @@ public class SortDefects extends JPanel{
 	public SortDefects(){
 		title.setFont(new Font("Serif", Font.PLAIN, 16));
 		setMinimumSize(new Dimension(400,250));
-		defectList.append(defectTrackerDAO.getCurrentListFromDefect(statuses[0]));
+	//	defectList.append(defectTrackerDAO.getCurrentListFromDefect(statuses[0]));
 		defectList.setLineWrap(true);
 		defectList.setEditable(true);
 		defectList.setVisible(true);

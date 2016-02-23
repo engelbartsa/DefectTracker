@@ -35,12 +35,13 @@ public class AddDefect extends JPanel {
 	JLabel title = new JLabel("Enter the defect information here: ");
 	JLabel summaryLabel = new JLabel("Defect Summary: ");
 	JTextField summary = new JTextField(50);
-	JLabel descriptionLabel = new JLabel("Enter a description here: ");
+	JLabel descriptionLabel = new JLabel("Description: ");
 	JTextField description = new JTextField(50);
 	JLabel priorityLabel = new JLabel("Priority: ");
 	JComboBox priority = new JComboBox(priorities);
 	JLabel statusLabel = new JLabel("Status: ");
 	JComboBox status = new JComboBox(statuses);
+	JLabel error = new JLabel();
 	
 	ArrayList<UserInfo> assigneeList = new ArrayList<UserInfo>(userTracker.arrayList);
 	
@@ -66,11 +67,12 @@ public class AddDefect extends JPanel {
 		
 		setLayout(new BorderLayout());
 		
-		title.setFont(new Font("Serif", Font.PLAIN, 16));
+		title.setFont(new Font("Serif", Font.BOLD, 22));
+		error.setFont(new Font("Serif", Font.BOLD, 20));
 		add(title, BorderLayout.NORTH);
 		
-		JPanel buttonLabels = new JPanel(new GridLayout(7,0));
-		JPanel textBoxes = new JPanel(new GridLayout(7,0));
+		JPanel buttonLabels = new JPanel(new GridLayout(8,0));
+		JPanel textBoxes = new JPanel(new GridLayout(8,0));
 		
 		buttonLabels.add(summaryLabel);
 		textBoxes.add(summary);
@@ -86,9 +88,11 @@ public class AddDefect extends JPanel {
 		textBoxes.add(reporterID);
 		buttonLabels.add(commentsLabel);
 		textBoxes.add(comments);
+		buttonLabels.add(error);
 		
 		add(buttonLabels, BorderLayout.WEST);
 		add(textBoxes, BorderLayout.CENTER);
+		
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
@@ -98,6 +102,7 @@ public class AddDefect extends JPanel {
 		buttonPanel.add(back);
 		
 		add(buttonPanel, BorderLayout.SOUTH);
+
 	}
 	
 	class ButtonListener implements ActionListener {
@@ -120,8 +125,20 @@ public class AddDefect extends JPanel {
 				String tempStatus = status.getSelectedItem().toString();
 				String tempPriority = priority.getSelectedItem().toString();
 				String tempComments = comments.getText();
-
-//need to add some type of error handling if options are empty
+//Adding error messages for required fields
+				if (tempSummary.equals("")){
+						error.setText("Enter a summary.");
+				} else if (tempDescription.equals("")){
+					error.setText("Enter a description.");
+				} else if (tempAssigneeID.equals("")){
+					error.setText("Enter an Assignee ID.");
+				} else if (tempReporterID.equals("")) {
+					error.setText("Enter a Reporter ID.");
+				} else if (tempStatus.equals("")){
+						error.setText("Select a status.");
+				} else if (tempPriority.equals("")){
+					error.setText("Select a priority.");
+				} else {
 
 /*				System.out.println("tempSummary: " + tempSummary); 
 				System.out.println("tempDescription: " + tempDescription); 
@@ -145,6 +162,7 @@ public class AddDefect extends JPanel {
 				comments.setText("");
 					
 				System.out.println("Add new item to database");
+			}
 			}
 
 			if (e.getSource() == viewDefects) {
