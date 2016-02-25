@@ -24,7 +24,7 @@ public class ViewDefectsPanel extends JPanel {
 	JScrollPane scroll = new JScrollPane(list);
 	JButton back = new JButton("Back");
 	JButton delete = new JButton("Delete defect");
-	//JButton update = new JButton("Update defect");
+	JButton update = new JButton("Update defect");
 	
 	public ViewDefectsPanel(){
 		title.setFont(new Font("Serif", Font.PLAIN, 16));
@@ -41,12 +41,12 @@ public class ViewDefectsPanel extends JPanel {
 		ButtonListener l = new ButtonListener();
 		back.addActionListener(l);
 		delete.addActionListener(l);
-		//update.addActionListener(l);
+		update.addActionListener(l);
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(back);
 		buttonPanel.add(delete);
-		//buttonPanel.add(update);
+		buttonPanel.add(update);
 		
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
@@ -82,6 +82,14 @@ public class ViewDefectsPanel extends JPanel {
 			
 			System.out.println("Remove selected object");
 		}
+		if(e.getSource()==update){
+            removeAll();
+            JPanel newPanel=new UpdateDefect();
+            add(newPanel);
+            revalidate();
+            newPanel.repaint();
+		}
+		
 		}
 	}
 }
