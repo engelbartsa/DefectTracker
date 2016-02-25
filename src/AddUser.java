@@ -99,8 +99,8 @@ public class AddUser extends JPanel {
 					error.setText("Enter the role.");
 				} else {
 				
-				UserInfo u = new UserInfo(tempUserId, tempFirstName, tempLastName, tempEmail, tempRole );
-			//	ListUsersDAO.insertNewUser(u);
+				UserInfo u = new UserInfo(tempUserId, tempFirstName, tempLastName, tempRole, tempEmail );
+				defectTracker.insertNewUser(u);
 				
 				userId.setText("");
 				firstName.setText("");
