@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,6 +17,8 @@ import javax.swing.JTextField;
 
 public class SortDefects extends JPanel{
 
+	ListUsersDAO userTracker = new ListUsersDAO();
+	
 	JLabel title = new JLabel("Sort Defects");
 	JComboBox defectId = new JComboBox();
 	JComboBox userId = new JComboBox();
@@ -28,8 +31,11 @@ public class SortDefects extends JPanel{
 
 	JLabel openDateLabel = new JLabel("Date Opened: ");
 	JLabel closeDateLabel = new JLabel("Date Closed: ");
-	JComboBox reporterID = new JComboBox(); //i need to get list from database
-	JComboBox assigneeID = new JComboBox(); //i need to get list from database
+	
+	ArrayList<UserInfo> assigneeList = new ArrayList<UserInfo>(userTracker.arrayList);
+	
+	JComboBox reporterID = new JComboBox(assigneeList.toArray()); 
+	JComboBox assigneeID = new JComboBox(assigneeList.toArray()); 
 	JLabel commnentsLabel = new JLabel("Defect Summary: ");
 	
 	JTextArea defectList = new JTextArea(20, 45);
@@ -40,7 +46,7 @@ public class SortDefects extends JPanel{
 	public SortDefects(){
 		title.setFont(new Font("Serif", Font.PLAIN, 16));
 		setMinimumSize(new Dimension(400,250));
-	//	defectList.append(defectTrackerDAO.getCurrentListFromDefect(statuses[0]));
+		defectList.append(defectTrackerDAO.getCurrentListFromDefect(statuses[0]));
 		defectList.setLineWrap(true);
 		defectList.setEditable(true);
 		defectList.setVisible(true);
@@ -76,11 +82,10 @@ public class SortDefects extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			//LL commented out to get Back button to work from Sort window.
-			/*String d = defectId.getSelectedItem().toString();
+			String d = defectId.getSelectedItem().toString();
 			defectList.setText(defectTrackerDAO.getCurrentListFromDefect(d));
 			System.out.println("noted change");
-			*/
+			
 			
 			if(e.getSource() == back){
 				removeAll();

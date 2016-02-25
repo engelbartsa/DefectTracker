@@ -70,18 +70,18 @@ public class ListDefectsDAO {
 		return str;
 	}
 
-	public String getCurrentListFromDefect(int s) {
+	public String getCurrentListFromDefect(String s) {
 		String str = "";
 
 		for (int i = 0; i < arrayList.size(); i++) {
-			if (arrayList.get(i).getDefectID() == s) {
+			if (arrayList.get(i).getStatus() == s) {
+				str += arrayList.get(i).getDefectID();
 				str += arrayList.get(i).getOpenDate();
 				str += arrayList.get(i).getCloseDate();
 				str += arrayList.get(i).getReporterID();
 				str += arrayList.get(i).getSummary();
 				str += arrayList.get(i).getDescription();
 				str += arrayList.get(i).getAssigneeID();
-				str += arrayList.get(i).getStatus();
 				str += arrayList.get(i).getPriority();
 				str += arrayList.get(i).getComments();
 				str += "\n";
@@ -297,6 +297,7 @@ public class ListDefectsDAO {
 			String user = "root";
 			String password = "disney99";
 
+			
 			try {
 
 				Class.forName("com.mysql.jdbc.Driver");
