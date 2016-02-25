@@ -100,7 +100,7 @@ public class AddUser extends JPanel {
 				} else {
 				
 				UserInfo u = new UserInfo(tempUserId, tempFirstName, tempLastName, tempEmail, tempRole );
-				ListUsersDAO.insertNewUser(u);
+			//	ListUsersDAO.insertNewUser(u);
 				
 				userId.setText("");
 				firstName.setText("");

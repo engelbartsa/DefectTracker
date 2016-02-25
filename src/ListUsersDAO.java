@@ -152,7 +152,7 @@ public class ListUsersDAO {
 		String url = "jdbc:mysql://localhost:3306/defect_tracking";
 		String user = "root";
 		String password = "disney99";
-
+	
 		try {
 
 			Class.forName("com.mysql.jdbc.Driver");
