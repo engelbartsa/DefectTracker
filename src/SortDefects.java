@@ -38,7 +38,7 @@ public class SortDefects extends JPanel{
 	JComboBox assigneeID = new JComboBox(assigneeList.toArray()); 
 	JLabel commnentsLabel = new JLabel("Defect Summary: ");
 	
-	JTextArea defectList = new JTextArea(20, 45);
+	JTextArea defectList = new JTextArea(20, 140);
 	
 	JButton back = new JButton("Back to Main");
 	ListDefectsDAO defectTrackerDAO = new ListDefectsDAO();
@@ -57,22 +57,13 @@ public class SortDefects extends JPanel{
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
         SortListener ss = new SortListener();
-        defectId.addActionListener(ss);
-        userId.addActionListener(ss);
-        priority.addActionListener(ss);
         status.addActionListener(ss);
-        assigneeID.addActionListener(ss);
-        reporterID.addActionListener(ss);
         back.addActionListener(ss);
         
         setLayout(new BorderLayout());
         
 		add(title, BorderLayout.NORTH);
-		add(defectId, BorderLayout.WEST);
-		add(userId, BorderLayout.WEST);
 		add(status, BorderLayout.WEST);
-		add(priority, BorderLayout.WEST);
-		add(assigneeID, BorderLayout.WEST);
 		add(scroll, BorderLayout.CENTER);
 		add(back, BorderLayout.SOUTH);	
 		
@@ -82,7 +73,7 @@ public class SortDefects extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			String d = defectId.getSelectedItem().toString();
+			String d = status.getSelectedItem().toString();
 			defectList.setText(defectTrackerDAO.getCurrentListFromDefect(d));
 			System.out.println("noted change");
 			
