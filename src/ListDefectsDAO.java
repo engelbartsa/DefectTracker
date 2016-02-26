@@ -40,8 +40,7 @@ public class ListDefectsDAO {
 						String tempAssignee = rs.getString(7);
 						String tempStatus = rs.getString(8);
 						String tempPriority = rs.getString(9);
-						String tempComments = rs.getString(10);
-//need to add comments from history table.  Connect by defect_id				
+						String tempComments = rs.getString(10);			
 						
 						DefectInfo e = new DefectInfo(tempDefectId, tempOpenDate, tempCloseDate, tempReporterId, tempDefectSummary
 								        , tempDetailDescription, tempAssignee, tempStatus, tempPriority, tempComments);
@@ -74,15 +73,24 @@ public class ListDefectsDAO {
 		String str = "";
 
 		for (int i = 0; i < arrayList.size(); i++) {
-			if (arrayList.get(i).getStatus() == s) {
+			if (arrayList.get(i).getStatus().equals(s)) {
+				str += "Defect ID = ";
 				str += arrayList.get(i).getDefectID();
-				str += arrayList.get(i).getOpenDate();
-				str += arrayList.get(i).getCloseDate();
+				str += " Open Date = ";
+				str += arrayList.get(i).getOpenDate().toString();
+				str += " Close Date = ";
+				str += arrayList.get(i).getCloseDate().toString();
+				str += " Reporter ID = ";
 				str += arrayList.get(i).getReporterID();
+				str += " Summary = ";
 				str += arrayList.get(i).getSummary();
+				str += " Description = ";
 				str += arrayList.get(i).getDescription();
+				str += " Assignee ID = ";
 				str += arrayList.get(i).getAssigneeID();
+				str += " Priority = ";
 				str += arrayList.get(i).getPriority();
+				str += " Comments = ";
 				str += arrayList.get(i).getComments();
 				str += "\n";
 			}
@@ -90,31 +98,31 @@ public class ListDefectsDAO {
 		return str;
 	}
 
-/*
-	 * public void updateDefect(ListDefects i) { 
-	 * makeConnection();
-	 * 
-	 * try { 
-	 * 		String q = "update  Users (user_id, first_name, last_name, role, email) values " + " ('" + i.getUserId() + "', '" 
-	 * 					+ i.getFirstName() + "', '" + i.getLastName() + "', '" + i.getRole() + "', '" + i.getEmail() + "');";
-	 * 
-	 * st = con.createStatement();
-	 * st.executeUpdate(q);
-	 * 
-	 * if (st != null) { 
-	 * 	st.close(); 
-	 * } 
-	 * 
-	 * if (con != null) { 
-	 * 	con.close(); 
-	 * }
-	 * 
-	 * } catch (SQLException ex) { 
-	 * 		System.out.println("Error with table or data");
-	 * }
-	 * 
-	 * }
-	 */
+
+/*	public void updateDefect(DefectInfo i) { 
+		 makeConnection();
+	
+	  try { 
+	 		String q = "update defect (close_date, reporter_id, defect_summary, detail_description, assignee, status, priority, comments) values "
+	                 +  " ('" + i.getCloseDate() + "', '" + i.getReporterID() + "', '" + i.getSummary() + "', '" 
+	                   + i.getDescription() + "', '" + i.getAssigneeID() + "', '" + i.getStatus() +  "', '" + i.getPriority() +  "', '" + i.getComments() + "');";
+	 
+	  st = con.createStatement();
+	  st.executeUpdate(q);
+	  
+	  if (st != null) { 
+	  	st.close(); 
+	  } 
+	 
+	  if (con != null) { 
+	  	con.close(); 
+	  }
+	  
+	  } catch (SQLException ex) { 
+	  		System.out.println("Error with table or data");
+	  }
+	 
+	}*/
 	
 	public void insertNewDefect(DefectInfo i) {
 		makeConnection();

@@ -82,14 +82,19 @@ public class ViewDefectsPanel extends JPanel {
 			
 			System.out.println("Remove selected object");
 		}
-		if(e.getSource()==update){
-            removeAll();
-            JPanel newPanel=new UpdateDefect();
-            add(newPanel);
-            revalidate();
-            newPanel.repaint();
+		if(e.getSource()==update){		
+			
+			int defect = list.getSelectedIndex();	
+			
+			if (defect != -1 ){
+				DefectInfo tempDefect = listDefect.get(defect);
+	            removeAll();
+	            JPanel newPanel=new UpdateDefect(tempDefect);
+	            add(newPanel);
+	            revalidate();
+	            repaint();
+			}
 		}
-		
 		}
 	}
 }
